@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daily Stock Manager · Advanced</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="header-top">
+      <h1>DAILY STOCK <span>MANAGER</span></h1>
+      <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+    <p class="sub">Track quantities &amp; collection across the week.</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="active" data-tab="data" onclick="showPage('data', this)">Daily stock data</button>
+    <button data-tab="update" onclick="showPage('update', this)">Daily stock update</button>
+    <button data-tab="godown" onclick="showPage('godown', this)">Godown</button>
+  </div>
+
+  <div class="days" id="days" role="tablist" aria-label="Select day"></div>
+
+  <!-- STOCK DATA -->
+  <section id="data" role="tabpanel">
+    <div class="card">
+      <h3>Stock item list <span id="catalogDayBadge" class="badge"></span></h3>
+      <p class="hint">Tick an item &amp; enter a quantity, then add to the day.</p>
+      <div id="catalog"></div>
+      <button class="primary" id="addSelectedBtn" onclick="addSelected()" disabled>
+        Add selected items to daily update →
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>Add new item</h3>
+      <div class="add">
+        <input id="newName" type="text" placeholder="Item name" maxlength="60"
+               onkeydown="if(event.key==='Enter')addItem()">
+        <button onclick="addItem()">Add</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAILY UPDATE -->
+  <section id="update" class="hidden" role="tabpanel">
+    <div class="card">
+      <h3>Daily stock update <span id="dayBadge" class="badge"></span></h3>
+
+      <div class="summary-bar">
+        <div class="stat done">
+          <div class="num" id="statCollected">0</div>
+          <div class="lbl">Collected</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statTotal">0</div>
+          <div class="lbl">Total</div>
+        </div>
+        <div class="stat rem">
+          <div class="num" id="statRemaining">0</div>
+          <div class="lbl">Remaining</div>
+        </div>
+      </div>
+
+      <div id="updateList"></div>
+
+      <div class="row-actions">
+        <button class="btn-ghost" onclick="selectAllRemaining()">Mark all collected</button>
+        <button class="btn-ghost" onclick="unselectAll()">Unmark all</button>
+      </div>
+
+      <button class="primary" onclick="clearCollected()">
+        Remove collected items
+      </button>
+      <button class="btn-danger" style="width:100%;margin-top:8px;" onclick="resetDay()">
+        Reset this day entirely
+      </button>
+    </div>
+  </section>
+
+  <!-- GODOWN -->
+  <section id="godown" class="hidden" role="tabpanel">
+    <div class="card">
+      <h3>Godown stock</h3>
+      <p class="hint">Available = base stock − collected across all days.</p>
+      <div id="godownList"></div>
+    </div>
+
+    <div class="card">
+      <h3>Add new godown item</h3>
+      <div class="add">
+        <input id="godownName" type="text" placeholder="Item name" maxlength="60"
+               onkeydown="if(event.key==='Enter')addGodownItem()">
+        <input id="godownQty" type="number" min="1" step="1" placeholder="QTY"
+               inputmode="numeric"
+               onkeydown="if(event.key==='Enter')addGodownItem()">
+        <button onclick="addGodownItem()">Add</button>
+      </div>
+      <div class="unit-picker" id="godownUnitPicker"></div>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
